@@ -8,7 +8,6 @@
 import UIKit
 import Alamofire
 
-
 class NetworkService {
     
     func fetchTracks(searchText: String, competion: @escaping (SearchResponse?) -> Void)  {

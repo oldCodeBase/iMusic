@@ -5,9 +5,7 @@
 //  Created by Ibragim Akaev on 04/12/2020.
 //
 
-import Foundation
 import UIKit
-
 
 extension UIViewController {
     

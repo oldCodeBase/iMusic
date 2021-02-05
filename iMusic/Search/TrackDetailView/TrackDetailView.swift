@@ -35,7 +35,7 @@ class TrackDetailView: UIView {
     @IBOutlet weak var volumeSlider: UISlider!
     
     let player: AVPlayer = {
-       let avPlayer = AVPlayer()
+        let avPlayer = AVPlayer()
         avPlayer.automaticallyWaitsToMinimizeStalling = false
         return avPlayer
     }()
@@ -44,22 +44,17 @@ class TrackDetailView: UIView {
     weak var tabBarDelegate: MainTabBarControllerDelegate?
     
     // MARK: - awakeFromNib
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         
         let scale: CGFloat = 0.8
         trackImageView.transform = CGAffineTransform(scaleX: scale, y: scale)
-        
         trackImageView.layer.cornerRadius = 5
-        
         miniPlayPauseButton.imageEdgeInsets = .init(top: 11, left: 11, bottom: 11, right: 11)
-        
         setupGestures()
     }
     
     // MARK: - Setup
-    
     func set(viewModel: SearchViewModel.Cell) {
         miniTrackTitleLabel.text = viewModel.trackName
         trackTitleLabel.text = viewModel.trackName
@@ -69,6 +64,7 @@ class TrackDetailView: UIView {
         observePlayerCurrentTime()
         playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
         miniPlayPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+        currentTimeSlider.setThumbImage(UIImage(named: "Knob"), for: .normal)
         let string600 = viewModel.iconUrlString?.replacingOccurrences(of: "100x100", with: "600x600")
         guard let url = URL(string: string600 ?? "") else { return }
         miniTrackImageView.sd_setImage(with: url, completed: nil)
@@ -76,16 +72,12 @@ class TrackDetailView: UIView {
     }
     
     private func setupGestures() {
-        
-        
         miniTrackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximized)))
         miniTrackView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handlePan)))
         addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismissalPan)))
     }
-
+    
     private func playTrack(previewUrl: String?) {
-        print("Пытаюсь включить трек по ссылке: \(previewUrl ?? "Отсутствует")")
-        
         guard let url = URL(string: previewUrl ?? "") else { return }
         let playerItem = AVPlayerItem(url: url)
         player.replaceCurrentItem(with: playerItem)
@@ -93,9 +85,7 @@ class TrackDetailView: UIView {
     }
     
     // MARK: - Maximizing and minimizing gestures
-    
     @objc private func handleTapMaximized() {
-        print("tapping to maximize")
         self.tabBarDelegate?.maximizeTrackDetailController(viewModel: nil)
     }
     
@@ -184,12 +174,7 @@ class TrackDetailView: UIView {
         self.currentTimeSlider.value = Float(percentage)
     }
     
-    deinit {
-        print("TrackDetailView memory being reclaimed...")
-    }
-    
     // MARK: - Animations
-    
     private func enlargeTrackImageView() {
         UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
             self.trackImageView.transform = .identity
@@ -204,8 +189,6 @@ class TrackDetailView: UIView {
     }
     
     // MARK: - @IBActions
-    
-    
     @IBAction func handleCurrentTimeSlider(_ sender: Any) {
         let percentage = currentTimeSlider.value
         guard let duration = player.currentItem?.duration else { return }
@@ -220,9 +203,7 @@ class TrackDetailView: UIView {
     }
     
     @IBAction func dragDownButtonTapped(_ sender: Any) {
-        
         self.tabBarDelegate?.minimizeTrackDetailController()
-//        self.removeFromSuperview()
     }
     
     @IBAction func previousTrack(_ sender: Any) {
@@ -250,7 +231,6 @@ class TrackDetailView: UIView {
             reduceTrackImageView()
         }
     }
-    
 }
 
 

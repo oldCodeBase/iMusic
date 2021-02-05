@@ -26,9 +26,7 @@ class SearchMusicViewController: UITableViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .white
-        
         setupSearchBar()
-        
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellId")
     }
     
@@ -55,8 +53,6 @@ class SearchMusicViewController: UITableViewController {
 extension SearchMusicViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        print(searchText)
-        
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { (_) in
             self.networkService.fetchTracks(searchText: searchText) { [weak self] (searchResults) in

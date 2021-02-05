@@ -22,7 +22,6 @@ struct Library: View {
                 GeometryReader { geometry in
                     HStack(spacing: 20) {
                         Button(action: {
-                            print("12345")
                             self.track = self.tracks[0]
                             self.tabBarDelegate?.maximizeTrackDetailController(viewModel: self.track)
                         }, label: {
@@ -49,7 +48,6 @@ struct Library: View {
                     LibraryCell(cell: track).gesture(
                         LongPressGesture()
                             .onEnded { _ in
-                                print("Pressed!")
                                 self.track = track
                                 self.showingAlert = true
                             }
@@ -63,15 +61,15 @@ struct Library: View {
                                                         .filter({$0.isKeyWindow}).first
                                                     let tabBarVC = keyWindow?.rootViewController as? MainTabBarController
                                                     tabBarVC?.trackDetailView.delegate = self
-                                                    
-                                                    
+
+
                                                     self.track = track
-                                                    
+
                                                     self.tabBarDelegate?.maximizeTrackDetailController(viewModel: self.track)
                                                 }))
                 }
                 .onDelete(perform: delete)
-                
+
                 }
                 .listStyle(GroupedListStyle())
             }.actionSheet(isPresented: $showingAlert, content: {
@@ -83,7 +81,6 @@ struct Library: View {
             })
             .navigationBarTitle("Library")
         }
-        
     }
     
     func delete(at offsets: IndexSet) {
@@ -108,7 +105,6 @@ struct Library: View {
 struct LibraryCell: View {
     
     var cell: SearchViewModel.Cell
-    
     var body: some View {
         HStack {
             URLImage(url: URL(string: cell.iconUrlString ?? "")!,
@@ -119,8 +115,17 @@ struct LibraryCell: View {
                             .cornerRadius(2)
                      })
             VStack(alignment: .leading) {
-                Text("\(cell.trackName)")
-                Text("\(cell.artistName)")
+                Text(cell.trackName)
+                    .font(.system(size: 17, weight: .medium))
+                    .lineLimit(1)
+                Text(cell.artistName)
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundColor(.gray)
+                    .lineLimit(1)
+                Text(cell.collectionName)
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundColor(.gray)
+                    .lineLimit(1)
             }
         }
         
